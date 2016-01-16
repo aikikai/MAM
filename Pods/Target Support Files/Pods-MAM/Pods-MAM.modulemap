@@ -1,0 +1,6 @@
+framework module Pods_MAM {
+  umbrella header "Pods-MAM-umbrella.h"
+
+  export *
+  module * { export * }
+}
