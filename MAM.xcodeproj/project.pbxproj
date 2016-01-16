@@ -435,6 +435,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ar.com.wehrli.MAM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "MAM/Header-bridge.h";
+				VALID_ARCHS = "arm64 armv7";
 			};
 			name = Debug;
 		};
@@ -449,6 +450,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ar.com.wehrli.MAM;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "MAM/Header-bridge.h";
+				VALID_ARCHS = "arm64 armv7";
 			};
 			name = Release;
 		};
