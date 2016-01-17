@@ -34,12 +34,16 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate, UITextField
     
     
     @IBOutlet weak var scrollView: UIScrollView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollContentSize = 10
         setStyles()
         scrollView.delegate = self
         setFormComponents()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
+        self.scrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: Selector("hideKeyboard")))        
     }
 
     @IBAction func editOffer(sender: AnyObject) {
@@ -236,6 +240,33 @@ class DetailsViewController: UIViewController, UIScrollViewDelegate, UITextField
         let strDate = dateFormatter.stringFromDate(date)
         return strDate
     }
+    
+    
+    //MARK: KEYBOARD
+    func hideKeyboard(){
+        for var v in self.scrollView.subviews{
+            if v.isKindOfClass(UITextField){
+                v.resignFirstResponder()
+                keyboardWillHide(NSNotification(name: UIKeyboardWillHideNotification, object: nil))
+            }
+        }
+    }
+
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+//            self.view.frame.origin.y -= keyboardSize.height
+            self.scrollContentSize = self.scrollContentSize + keyboardSize.height
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+//            self.view.frame.origin.y += keyboardSize.height
+            self.scrollContentSize = self.scrollContentSize - keyboardSize.height
+        }
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
