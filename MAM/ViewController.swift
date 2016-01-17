@@ -16,6 +16,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var offerArray = Array<oferta>()
     let empty = UILabel(frame: CGRectMake(0, UIScreen.mainScreen().bounds.size.height/2-70, UIScreen.mainScreen().bounds.size.width, 60))
 
+    @IBOutlet weak var activityLoader: UIActivityIndicatorView!
+    
     override func viewWillAppear(animated: Bool) {
         if let updated = NSUserDefaults.standardUserDefaults().objectForKey("updatedOffer") as? String{
             if updated == "true"{ // se actualizó alguna oferta y hay que hacer request
@@ -35,6 +37,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 
     func request(){
+        activityLoader.startAnimating()
         offerArray.removeAll()
         APIRequest.getAllObjects(className: OFERTA){ (result) in
             if result.isEmpty{
@@ -64,6 +67,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 }
                 self.tableView.reloadData()
                 UIView.animateWithDuration(0.5, animations: { () -> Void in
+                    self.activityLoader.stopAnimating()
                     self.empty.removeFromSuperview()
                     self.tableView.alpha = 1.0
                 })
