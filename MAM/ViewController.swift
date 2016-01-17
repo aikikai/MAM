@@ -38,6 +38,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     func request(){
         activityLoader.startAnimating()
+        UIView.animateWithDuration(0.5, animations: { () -> Void in
+            self.activityLoader.alpha = 1.0
+        }, completion: nil)
+        
         offerArray.removeAll()
         APIRequest.getAllObjects(className: OFERTA){ (result) in
             if result.isEmpty{
@@ -48,6 +52,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 self.empty.tintColor = UIColor.RGBColor(red: 180, green: 180, blue: 200)
                 self.empty.tag = 999
                 self.view.addSubview(self.empty)
+                UIView.animateWithDuration(0.5, animations: { () -> Void in
+                        self.activityLoader.alpha = 0.0
+                }, completion: nil)
             }
             else{
                 for var ofertaItem in result{
@@ -67,6 +74,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 }
                 self.tableView.reloadData()
                 UIView.animateWithDuration(0.5, animations: { () -> Void in
+                    UIView.animateWithDuration(0.5, animations: { () -> Void in
+                        self.activityLoader.alpha = 0.0
+                        }, completion: nil)                    
                     self.activityLoader.stopAnimating()
                     self.empty.removeFromSuperview()
                     self.tableView.alpha = 1.0
